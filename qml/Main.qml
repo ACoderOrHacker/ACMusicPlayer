@@ -320,6 +320,8 @@ HusWindow {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.bottom: parent.bottom
+            width: galleryMenu.compactMode === HusMenu.Mode_Relaxed ?
+                           galleryMenu.defaultMenuWidth : galleryMenu.compactWidth
 
             HusIconButton {
                 id: navModeSwitchBtn
