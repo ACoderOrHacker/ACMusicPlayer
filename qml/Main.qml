@@ -15,6 +15,7 @@ HusWindow {
     minimumWidth: 800
     minimumHeight: 600
     title: qsTr('ACMusic Player')
+    specialEffect: HusWindow.None
     followThemeSwitch: true
     captionBar.visible: Qt.platform.os === 'windows' || Qt.platform.os === 'linux' || Qt.platform.os === 'osx'
     captionBar.height: captionBar.visible ? 30 : 0
@@ -40,6 +41,7 @@ HusWindow {
         layoutDirection: captionBar.mirrored ? Qt.RightToLeft : Qt.LeftToRight
         spacing: 0
 
+
         Connections {
             target: captionBar
             function onWindowAgentChanged() {
@@ -60,7 +62,7 @@ HusWindow {
             Layout.leftMargin: 10
             Layout.fillHeight: true
             noDisabledState: true
-            enabled: galleryRouter.canGoBack
+            enabled: mplayerRouter.canGoBack
             hoverCursorShape: Qt.PointingHandCursor
             iconSource: HusIcon.ArrowLeftOutlined
             iconSize: 14
@@ -74,8 +76,8 @@ HusWindow {
                     return 'transparent';
                 }
             }
-            contentDescription: qsTr('后退')
-            onClicked: galleryRouter.goBack();
+            contentDescription: qsTr('Back')
+            onClicked: mplayerRouter.goBack();
 
             HusToolTip {
                 visible: parent.hovered
@@ -89,7 +91,7 @@ HusWindow {
             id: goForwardButton
             Layout.fillHeight: true
             noDisabledState: true
-            enabled: galleryRouter.canGoForward
+            enabled: mplayerRouter.canGoForward
             hoverCursorShape: Qt.PointingHandCursor
             iconSource: HusIcon.ArrowRightOutlined
             iconSize: 14
@@ -103,8 +105,8 @@ HusWindow {
                     return 'transparent';
                 }
             }
-            contentDescription: qsTr('前进')
-            onClicked: galleryRouter.goForward();
+            contentDescription: qsTr('Forward')
+            onClicked: mplayerRouter.goForward();
 
             HusToolTip {
                 visible: parent.hovered
@@ -141,16 +143,16 @@ HusWindow {
                     implicitWidth: 180
                     implicitHeight: Math.min(contentHeight, 300)
                     clip: true
-                    model: galleryRouter.history
+                    model: mplayerRouter.history
                     delegate: HusButton {
                         width: ListView.view.width
                         effectEnabled: false
                         text: urlData.label
                         colorBorder: 'transparent'
                         radiusBg.all: 0
-                        onClicked: galleryRouter.gotoUrl(modelData.location);
+                        onClicked: mplayerRouter.gotoUrl(modelData.location);
                         required property var modelData
-                        property var urlData: galleryRouter.urlDataMap.get(modelData.location)
+                        property var urlData: mplayerRouter.urlDataMap.get(modelData.location)
                     }
                     ScrollBar.vertical: HusScrollBar { }
                 }
@@ -214,12 +216,12 @@ HusWindow {
     }
 
     HusRouter {
-        id: galleryRouter
+        id: mplayerRouter
         property var urlDataMap: new Map
         function gotoUrl(url) {
             if (urlDataMap.has(url)) {
                 const data = urlDataMap.get((url));
-                galleryMenu.gotoMenu(data.key);
+                mplayerMenu.gotoMenu(data.key);
             }
         }
         onCurrentUrlChanged: gotoUrl(currentUrl);
@@ -280,17 +282,6 @@ HusWindow {
         sourceComponent: SettingsPage { visible: settingsLoader.visible }
     }
 
-    Component.onCompleted: {
-        if (Qt.platform.os === 'windows') {
-            if (setSpecialEffect(HusWindow.Win_MicaAlt)) return;
-            if (setSpecialEffect(HusWindow.Win_Mica)) return;
-            if (setSpecialEffect(HusWindow.Win_AcrylicMaterial)) return;
-            if (setSpecialEffect(HusWindow.Win_DwmBlur)) return;
-        } else if (Qt.platform.os === 'osx') {
-            if (setSpecialEffect(HusWindow.Mac_BlurEffect)) return;
-        }
-    }
-
     Behavior on opacity { NumberAnimation { } }
 
     Timer {
@@ -320,25 +311,25 @@ HusWindow {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.bottom: parent.bottom
-            width: galleryMenu.compactMode === HusMenu.Mode_Relaxed ?
-                           galleryMenu.defaultMenuWidth : galleryMenu.compactWidth
+            width: mplayerMenu.compactMode === HusMenu.Mode_Relaxed ?
+                           mplayerMenu.defaultMenuWidth : mplayerMenu.compactWidth
 
             HusIconButton {
                 id: navModeSwitchBtn
                 anchors.top: parent.top
                 anchors.left: parent.left
-                iconSource: galleryMenu.compactMode === HusMenu.Mode_Relaxed ? HusIcon.MenuOutlined : HusIcon.MenuFoldOutlined
-                iconSize: galleryMenu.defaultMenuIconSize
+                iconSource: mplayerMenu.compactMode === HusMenu.Mode_Relaxed ? HusIcon.MenuOutlined : HusIcon.MenuFoldOutlined
+                iconSize: mplayerMenu.defaultMenuIconSize
                 checkable: false
                 colorText: HusTheme.Primary.colorTextBase
                 type: HusButton.Type_Text
                 onClicked: {
-                    galleryMenu.compactMode = galleryMenu.compactMode === HusMenu.Mode_Relaxed ? HusMenu.Mode_Compact : HusMenu.Mode_Relaxed;
+                    mplayerMenu.compactMode = mplayerMenu.compactMode === HusMenu.Mode_Relaxed ? HusMenu.Mode_Compact : HusMenu.Mode_Relaxed;
                 }
                 SequentialAnimation on rotation {
-                    NumberAnimation { from: 0; to: 180; duration: 180; easing.type: Easing.InOutQuad }
+                    NumberAnimation { from: 0; to: 180; duration: 300; easing.type: Easing.InOutQuad }
                 }
-                Behavior on iconSource { NumberAnimation { duration: 120 } }
+                Behavior on iconSource { NumberAnimation { duration: 250 } }
             }
 
             HusAutoComplete {
@@ -346,9 +337,9 @@ HusWindow {
                 property bool expanded: false
                 z: 10
                 clip: true
-                width: (galleryMenu.compactMode === HusMenu.Mode_Relaxed || expanded) ? (galleryMenu.defaultMenuWidth - 20) : 0
+                width: (mplayerMenu.compactMode === HusMenu.Mode_Relaxed || expanded) ? (mplayerMenu.defaultMenuWidth - 20) : 0
                 anchors.top: navModeSwitchBtn.bottom
-                anchors.left: galleryMenu.compactMode === HusMenu.Mode_Relaxed ? galleryMenu.left : galleryMenu.right
+                anchors.left: mplayerMenu.compactMode === HusMenu.Mode_Relaxed ? mplayerMenu.left : mplayerMenu.right
                 anchors.margins: 10
                 anchors.topMargin: 5
                 topPadding: 6
@@ -357,10 +348,10 @@ HusWindow {
                 showToolTip: true
                 placeholderText: qsTr('Search')
                 iconSource: HusIcon.SearchOutlined
-                colorBg: !(galleryMenu.compactMode === HusMenu.Mode_Relaxed) ? HusTheme.HusInput.colorBg : 'transparent'
+                colorBg: !(mplayerMenu.compactMode === HusMenu.Mode_Relaxed) ? HusTheme.HusInput.colorBg : 'transparent'
                 //TODO: options for searching
                 filterOption: (input, option) => option.label.toUpperCase().indexOf(input.toUpperCase()) !== -1
-                onSelect: option => galleryMenu.gotoMenu(option.key)
+                onSelect: option => mplayerMenu.gotoMenu(option.key)
                 labelDelegate: HusText {
                     height: implicitHeight + 4
                     text: parent.textData
@@ -395,18 +386,18 @@ HusWindow {
                 }
 
                 Behavior on width {
-                    enabled: !(galleryMenu.compactMode === HusMenu.Mode_Relaxed) &&
-                             galleryMenu.width === galleryMenu.compactWidth
+                    enabled: !(mplayerMenu.compactMode === HusMenu.Mode_Relaxed) &&
+                             mplayerMenu.width === mplayerMenu.compactWidth
                     NumberAnimation { duration: HusTheme.Primary.durationFast }
                 }
             }
 
             HusIconButton {
                 id: searchCollapse
-                visible: !(galleryMenu.compactMode === HusMenu.Mode_Relaxed)
+                visible: !(mplayerMenu.compactMode === HusMenu.Mode_Relaxed)
                 anchors.top: navModeSwitchBtn.bottom
-                anchors.left: galleryMenu.left
-                anchors.right: galleryMenu.right
+                anchors.left: mplayerMenu.left
+                anchors.right: mplayerMenu.right
                 anchors.margins: 10
                 type: HusButton.Type_Text
                 colorText: HusTheme.Primary.colorTextBase
@@ -414,7 +405,7 @@ HusWindow {
                 iconSize: searchComponent.iconSize
                 onClicked: {
                     searchComponent.expanded = !searchComponent.expanded;
-                    galleryMenu.compactMode = HusMenu.Mode_Relaxed;
+                    mplayerMenu.compactMode = HusMenu.Mode_Relaxed;
                     if (searchComponent.expanded) {
                         searchComponent.forceActiveFocus();
                     }
@@ -428,7 +419,7 @@ HusWindow {
             }
 
             HusMenu {
-                id: galleryMenu
+                id: mplayerMenu
                 anchors.left: parent.left
                 anchors.top: searchComponent.bottom
                 showEdge: true
@@ -443,8 +434,8 @@ HusWindow {
                         source: './Home/HomePage.qml'
                     },
                     {
-                        key: 'Music',
-                        label: qsTr('Listen'),
+                        key: 'Playing',
+                        label: qsTr('Playing'),
                         iconSource: HusIcon.AudioFilled,
                         source: './Home/MusicHome.qml'
                     }
@@ -478,8 +469,8 @@ HusWindow {
                     property var menuButton: parent.menuButton
                     property string badgeState: model.badgeState ?? ''
 
-                    Behavior on color { enabled: galleryMenu.animationEnabled; ColorAnimation { duration: HusTheme.Primary.durationMid } }
-                    Behavior on border.color { enabled: galleryMenu.animationEnabled; ColorAnimation { duration: HusTheme.Primary.durationMid } }
+                    Behavior on color { enabled: mplayerMenu.animationEnabled; ColorAnimation { duration: HusTheme.Primary.durationMid } }
+                    Behavior on border.color { enabled: mplayerMenu.animationEnabled; ColorAnimation { duration: HusTheme.Primary.durationMid } }
 
                     HusBadge {
                         anchors.left: undefined
@@ -497,8 +488,8 @@ HusWindow {
                         if (data.hasOwnProperty('menuChildren')) {
                             setDataProperty(key, 'badgeState', '');
                         } else {
-                            galleryRouter.urlDataMap.set(Qt.url(data.source), data);
-                            galleryRouter.push(data.source);
+                            mplayerRouter.urlDataMap.set(Qt.url(data.source), data);
+                            mplayerRouter.push(data.source);
                             console.debug('onClickMenu', deep, key, keyPath, JSON.stringify(data));
                         }
                     }
@@ -516,7 +507,7 @@ HusWindow {
             anchors.margins: 5
             clip: true
 
-            property string pageSource: (galleryRouter.urlDataMap.get(galleryRouter.currentUrl) || {}).source
+            property string pageSource: (mplayerRouter.urlDataMap.get(mplayerRouter.currentUrl) || {}).source
             Loader {
                 anchors.fill: parent
                 source: container.pageSource
