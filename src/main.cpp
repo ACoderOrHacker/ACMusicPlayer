@@ -12,10 +12,12 @@ int main(int argc, char *argv[])
     QQuickWindow::setDefaultAlphaBuffer(true);
 
     QGuiApplication app(argc, argv);
+    QFont font;
     app.setApplicationName("ACMusic Player");
     app.setApplicationDisplayName("Music Player");
     app.setApplicationVersion(QString(mplayer::version::version));
-    app.setFont(QFont(QString("Fixedsys")));
+    font.setPointSize(11);
+    app.setFont(font);
 
     QQmlApplicationEngine engine;
     HusApp::initialize(&engine);
