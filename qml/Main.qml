@@ -308,123 +308,124 @@ HusWindow {
         opacity: 0.2
     }
 
-    Item {
+    ColumnLayout {
         id: content
         anchors.top: mplayerWindow.captionBar.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        HusIconButton {
-            id: navModeSwitchBtn
-            anchors.top: parent.top
-            anchors.left: parent.left
-            iconSource: galleryMenu.compactMode === HusMenu.Mode_Relaxed ? HusIcon.MenuOutlined : HusIcon.MenuFoldOutlined
-            iconSize: galleryMenu.defaultMenuIconSize
-            checkable: false
-            colorText: HusTheme.Primary.colorTextBase
-            type: HusButton.Type_Text
-            onClicked: {
-                galleryMenu.compactMode = galleryMenu.compactMode === HusMenu.Mode_Relaxed ? HusMenu.Mode_Compact : HusMenu.Mode_Relaxed;
-            }
-            SequentialAnimation on rotation {
-                NumberAnimation { from: 0; to: 180; duration: 180; easing.type: Easing.InOutQuad }
-            }
-            Behavior on iconSource { NumberAnimation { duration: 120 } }
-        }
 
-        HusAutoComplete {
-            id: searchComponent
-            property bool expanded: false
-            z: 10
-            clip: true
-            width: (galleryMenu.compactMode === HusMenu.Mode_Relaxed || expanded) ? (galleryMenu.defaultMenuWidth - 20) : 0
-            anchors.top: navModeSwitchBtn.bottom
-            anchors.left: galleryMenu.compactMode === HusMenu.Mode_Relaxed ? galleryMenu.left : galleryMenu.right
-            anchors.margins: 10
-            anchors.topMargin: 5
-            topPadding: 6
-            bottomPadding: 6
-            rightPadding: 50
-            showToolTip: true
-            placeholderText: qsTr('Search')
-            iconSource: HusIcon.SearchOutlined
-            colorBg: !(galleryMenu.compactMode === HusMenu.Mode_Relaxed) ? HusTheme.HusInput.colorBg : 'transparent'
-            //TODO: options for searching
-            filterOption: (input, option) => option.label.toUpperCase().indexOf(input.toUpperCase()) !== -1
-            onSelect: option => galleryMenu.gotoMenu(option.key)
-            labelDelegate: HusText {
-                height: implicitHeight + 4
-                text: parent.textData
-                color: HusTheme.HusAutoComplete.colorItemText
-                font {
-                    family: HusTheme.HusAutoComplete.fontFamily
-                    pixelSize: HusTheme.HusAutoComplete.fontSize
-                    weight: parent.highlighted ? Font.DemiBold : Font.Normal
+        Item {
+            id: contentItem
+
+            HusIconButton {
+                id: navModeSwitchBtn
+                anchors.top: parent.top
+                anchors.left: parent.left
+                iconSource: galleryMenu.compactMode === HusMenu.Mode_Relaxed ? HusIcon.MenuOutlined : HusIcon.MenuFoldOutlined
+                iconSize: galleryMenu.defaultMenuIconSize
+                checkable: false
+                colorText: HusTheme.Primary.colorTextBase
+                type: HusButton.Type_Text
+                onClicked: {
+                    galleryMenu.compactMode = galleryMenu.compactMode === HusMenu.Mode_Relaxed ? HusMenu.Mode_Compact : HusMenu.Mode_Relaxed;
                 }
-                elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
-
-                property var model: parent.modelData
-                property string tagState: model.state ?? ''
-
-                HusTag {
-                    id: __tag
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: parent.tagState
-                    presetColor: parent.tagState === 'New' ? 'red' : 'green'
-                    visible: parent.tagState !== ''
+                SequentialAnimation on rotation {
+                    NumberAnimation { from: 0; to: 180; duration: 180; easing.type: Easing.InOutQuad }
                 }
+                Behavior on iconSource { NumberAnimation { duration: 120 } }
             }
 
-            Keys.onEscapePressed: {
-                if (expanded) {
-                    expanded = false;
-                } else {
-                    closePopup();
+            HusAutoComplete {
+                id: searchComponent
+                property bool expanded: false
+                z: 10
+                clip: true
+                width: (galleryMenu.compactMode === HusMenu.Mode_Relaxed || expanded) ? (galleryMenu.defaultMenuWidth - 20) : 0
+                anchors.top: navModeSwitchBtn.bottom
+                anchors.left: galleryMenu.compactMode === HusMenu.Mode_Relaxed ? galleryMenu.left : galleryMenu.right
+                anchors.margins: 10
+                anchors.topMargin: 5
+                topPadding: 6
+                bottomPadding: 6
+                rightPadding: 50
+                showToolTip: true
+                placeholderText: qsTr('Search')
+                iconSource: HusIcon.SearchOutlined
+                colorBg: !(galleryMenu.compactMode === HusMenu.Mode_Relaxed) ? HusTheme.HusInput.colorBg : 'transparent'
+                //TODO: options for searching
+                filterOption: (input, option) => option.label.toUpperCase().indexOf(input.toUpperCase()) !== -1
+                onSelect: option => galleryMenu.gotoMenu(option.key)
+                labelDelegate: HusText {
+                    height: implicitHeight + 4
+                    text: parent.textData
+                    color: HusTheme.HusAutoComplete.colorItemText
+                    font {
+                        family: HusTheme.HusAutoComplete.fontFamily
+                        pixelSize: HusTheme.HusAutoComplete.fontSize
+                        weight: parent.highlighted ? Font.DemiBold : Font.Normal
+                    }
+                    elide: Text.ElideRight
+                    verticalAlignment: Text.AlignVCenter
+
+                    property var model: parent.modelData
+                    property string tagState: model.state ?? ''
+
+                    HusTag {
+                        id: __tag
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: parent.tagState
+                        presetColor: parent.tagState === 'New' ? 'red' : 'green'
+                        visible: parent.tagState !== ''
+                    }
                 }
-            }
 
-            Behavior on width {
-                enabled: !(galleryMenu.compactMode === HusMenu.Mode_Relaxed) &&
-                         galleryMenu.width === galleryMenu.compactWidth
-                NumberAnimation { duration: HusTheme.Primary.durationFast }
-            }
-        }
+                Keys.onEscapePressed: {
+                    if (expanded) {
+                        expanded = false;
+                    } else {
+                        closePopup();
+                    }
+                }
 
-        HusIconButton {
-            id: searchCollapse
-            visible: !(galleryMenu.compactMode === HusMenu.Mode_Relaxed)
-            anchors.top: navModeSwitchBtn.bottom
-            anchors.left: galleryMenu.left
-            anchors.right: galleryMenu.right
-            anchors.margins: 10
-            type: HusButton.Type_Text
-            colorText: HusTheme.Primary.colorTextBase
-            iconSource: HusIcon.SearchOutlined
-            iconSize: searchComponent.iconSize
-            onClicked: {
-                searchComponent.expanded = !searchComponent.expanded;
-                galleryMenu.compactMode = HusMenu.Mode_Relaxed;
-                if (searchComponent.expanded) {
-                    searchComponent.forceActiveFocus();
+                Behavior on width {
+                    enabled: !(galleryMenu.compactMode === HusMenu.Mode_Relaxed) &&
+                             galleryMenu.width === galleryMenu.compactWidth
+                    NumberAnimation { duration: HusTheme.Primary.durationFast }
                 }
             }
-            onVisibleChanged: {
-                if (visible) {
-                    searchComponent.closePopup();
-                    searchComponent.expanded = false;
+
+            HusIconButton {
+                id: searchCollapse
+                visible: !(galleryMenu.compactMode === HusMenu.Mode_Relaxed)
+                anchors.top: navModeSwitchBtn.bottom
+                anchors.left: galleryMenu.left
+                anchors.right: galleryMenu.right
+                anchors.margins: 10
+                type: HusButton.Type_Text
+                colorText: HusTheme.Primary.colorTextBase
+                iconSource: HusIcon.SearchOutlined
+                iconSize: searchComponent.iconSize
+                onClicked: {
+                    searchComponent.expanded = !searchComponent.expanded;
+                    galleryMenu.compactMode = HusMenu.Mode_Relaxed;
+                    if (searchComponent.expanded) {
+                        searchComponent.forceActiveFocus();
+                    }
+                }
+                onVisibleChanged: {
+                    if (visible) {
+                        searchComponent.closePopup();
+                        searchComponent.expanded = false;
+                    }
                 }
             }
-        }
-
-        RowLayout {
-            anchors.fill: parent
-            spacing: 0
 
             HusMenu {
                 id: galleryMenu
-                Layout.alignment: Qt.AlignLeft
+                anchors.left: parent.left
+                anchors.top: searchComponent.bottom
                 showEdge: true
                 showToolTip: true
                 defaultMenuWidth: 300
@@ -497,20 +498,18 @@ HusWindow {
                         }
                     }
                 }
-            }
+            } }
 
-            Item {
-                id: container
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                anchors.margins: 5
-                clip: true
+        Item {
+            id: container
+            visible: true
+            anchors.margins: 5
+            clip: true
 
-                property string pageSource: (galleryRouter.urlDataMap.get(galleryRouter.currentUrl) || {}).source
-                Loader {
-                    anchors.fill: parent
-                    source: container.pageSource
-                }
+            property string pageSource: (galleryRouter.urlDataMap.get(galleryRouter.currentUrl) || {}).source
+            Loader {
+                anchors.fill: parent
+                source: container.pageSource
             }
         }
     }
