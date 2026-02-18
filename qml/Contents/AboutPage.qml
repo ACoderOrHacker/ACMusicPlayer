@@ -18,7 +18,7 @@ HusWindow {
             width: 16
             height: 16
             anchors.centerIn: parent
-            source: 'qrc:/img/favicon.png'
+            source: 'qrc:/img/app.png'
         }
     }
     captionBar.closeCallback: () => aboutLoader.visible = false;

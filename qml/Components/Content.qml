@@ -1,11 +1,7 @@
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls.Basic
 import HuskarUI.Basic
 
-import '../Components'
-
-Content {
-
+Flickable {
+    ScrollBar.vertical: HusScrollBar {}
 }
-

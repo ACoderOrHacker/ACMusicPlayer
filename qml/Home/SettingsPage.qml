@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import QtQuick.Controls.Basic
 import HuskarUI.Basic
+import PlayerCpp
 
 HusWindow {
     id: root
@@ -19,7 +20,7 @@ HusWindow {
             width: 16
             height: 16
             anchors.centerIn: parent
-            source: 'qrc:/img/favicon.png'
+            source: 'qrc:/img/app.png'
         }
     }
     captionBar.closeCallback: () => settingsLoader.visible = false;
@@ -132,7 +133,7 @@ HusWindow {
                             width: parent.width
                             height: width
                             anchors.centerIn: parent
-                            source: 'qrc:/img/favicon.png'
+                            source: 'qrc:/img/app.png'
                         }
                     }
 
@@ -144,6 +145,11 @@ HusWindow {
                             bold: true
                         }
                         text: qsTr('ACMusic Player')
+                    }
+
+                    HusCopyableText {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: qsTr('ACMusic Player Version: ') + version.full
                     }
 
                     HusCopyableText {

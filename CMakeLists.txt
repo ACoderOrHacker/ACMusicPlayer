@@ -6,11 +6,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMKAE_CXX_STANDARD 23)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(HuskarUI REQUIRED)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
 set(CMAKE_AUTORCC TRUE)
+
+# Windows RC
+set(WIN32_RESOURCES "")
+if (WIN32)
+    enable_language("RC")
+    set (WIN32_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/windows/app.rc)
+endif()
 
 qt_add_executable(mplayer
     res/resources.qrc
@@ -22,11 +30,13 @@ qt_add_qml_module(mplayer
         qml/Main.qml
         qml/Home/HomePage.qml
         qml/Home/SettingsPage.qml
-        qml/Home/MusicHome.qml
-    SOURCES
-    SOURCES include/version.h include/themeswitchitem.h
+        qml/Home/Playing.qml
+        qml/Components/Content.qml
+        qml/Home/Playlist.qml
+    SOURCES include/version.h include/themeswitchitem.h include/versionqml.h
     RESOURCES res/resources.qrc
-    SOURCES src/main.cpp src/themeswitchitem.cpp
+    SOURCES src/main.cpp src/themeswitchitem.cpp src/versionqml.cpp
+    SOURCES $<$<BOOL:${WIN32}>:${WIN32_RESOURCES}>
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -43,10 +53,13 @@ target_include_directories(mplayer
     PRIVATE include
 )
 
-target_link_libraries(mplayer
-    PRIVATE Qt6::Quick
-    PRIVATE HuskarUI::Basic
+target_link_libraries(mplayer PRIVATE
+    Qt6::Quick
+    HuskarUI::Basic
+    $<$<BOOL:${BUILD_HUSKARUI_STATIC_LIBRARY}>:HuskarUIImplPlugin>
+    $<$<BOOL:${BUILD_HUSKARUI_STATIC_LIBRARY}>:HuskarUIBasicPlugin>
 )
+target_link_libraries(mplayer PRIVATE Qt6::Core)
 
 include(GNUInstallDirs)
 install(TARGETS mplayer

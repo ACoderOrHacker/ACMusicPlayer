@@ -217,7 +217,7 @@ Rectangle {
                         width: parent.width
                         height: width
                         anchors.centerIn: parent
-                        source: 'qrc:/img/favicon.png' // TODO::::
+                        source: 'qrc:/img/app.png' // TODO::::
                     }
                 }
 

@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import HuskarUI.Basic
 
-Rectangle {
+import '../Components'
+
+Content {
 
 }

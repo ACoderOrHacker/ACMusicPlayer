@@ -28,7 +28,7 @@ HusWindow {
             width: 16
             height: 16
             anchors.centerIn: parent
-            source: 'qrc:/img/favicon.png'
+            source: 'qrc:/img/app.png'
         }
     }
     captionBar.themeCallback: () => {
@@ -437,7 +437,13 @@ HusWindow {
                         key: 'Playing',
                         label: qsTr('Playing'),
                         iconSource: HusIcon.AudioFilled,
-                        source: './Home/MusicHome.qml'
+                        source: './Home/Playing.qml'
+                    },
+                    {
+                        key: 'Playlist',
+                        label: qsTr('Playlist'),
+                        iconSource: HusIcon.OrderedListOutlined,
+                        source: './Home/Playlist.qml'
                     }
                 ]
 

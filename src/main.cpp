@@ -1,10 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
+#include <QQmlContext>
 #include <QFont>
 #include <QJSEngine>
 #include <husapp.h>
 
+#include "versionqml.h"
 #include "version.h"
 
 int main(int argc, char *argv[])
@@ -19,8 +21,12 @@ int main(int argc, char *argv[])
     font.setPointSize(11);
     app.setFont(font);
 
+    MPlayerVersion versionQml;
+    qmlRegisterType<MPlayerVersion>("PlayerCpp", 0, 1, "MPlayerVersion");
+
     QQmlApplicationEngine engine;
     HusApp::initialize(&engine);
+    engine.rootContext()->setContextProperty("version", &versionQml);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,

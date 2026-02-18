@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls.Basic
+import QtQuick.Controls
 import HuskarUI.Basic
 
 import '../Components'
@@ -8,4 +8,3 @@ import '../Components'
 Content {
 
 }
-
