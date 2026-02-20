@@ -4,7 +4,6 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import QtQuick.Controls.Basic
 import HuskarUI.Basic
-import PlayerCpp
 
 HusWindow {
     id: root
@@ -119,7 +118,7 @@ HusWindow {
                 title: qsTr('About')
                 itemDelegate: Column {
                     width: parent.width
-                    height: 200
+                    height: 300
                     anchors.top: parent.top
                     anchors.topMargin: captionBar.height
                     spacing: 10
@@ -149,7 +148,7 @@ HusWindow {
 
                     HusCopyableText {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTr('ACMusic Player Version: ') + version.full
+                        text: qsTr('ACMusic Player Version: ') + MPlayerVersion.full
                     }
 
                     HusCopyableText {

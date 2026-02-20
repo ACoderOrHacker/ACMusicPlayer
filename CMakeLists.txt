@@ -5,6 +5,7 @@ project(ACMusicPlayer VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMKAE_CXX_STANDARD 23)
 
+find_package(Qt6 REQUIRED COMPONENTS Multimedia)
 find_package(Qt6 REQUIRED COMPONENTS Quick)
 find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(HuskarUI REQUIRED)
@@ -33,10 +34,17 @@ qt_add_qml_module(mplayer
         qml/Home/Playing.qml
         qml/Components/Content.qml
         qml/Home/Playlist.qml
-    SOURCES include/version.h include/themeswitchitem.h include/versionqml.h
+    SOURCES include/version.h include/themeswitchitem.h include/versionqml.h include/mediaplayer.h
     RESOURCES res/resources.qrc
-    SOURCES src/main.cpp src/themeswitchitem.cpp src/versionqml.cpp
+    SOURCES src/main.cpp src/themeswitchitem.cpp src/versionqml.cpp src/mediaplayer.cpp
     SOURCES $<$<BOOL:${WIN32}>:${WIN32_RESOURCES}>
+    QML_FILES qml/Components/Playbar.qml
+    QML_FILES qml/Components/VolumeSlider.qml
+    QML_FILES
+    QML_FILES qml/Components/ThemeImage.qml
+    QML_FILES qml/Components/ThemeImageButton.qml
+    QML_FILES qml/Components/PlaybarImageButton.qml
+    QML_FILES
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -55,10 +63,12 @@ target_include_directories(mplayer
 
 target_link_libraries(mplayer PRIVATE
     Qt6::Quick
+    Qt6::Multimedia
     HuskarUI::Basic
     $<$<BOOL:${BUILD_HUSKARUI_STATIC_LIBRARY}>:HuskarUIImplPlugin>
     $<$<BOOL:${BUILD_HUSKARUI_STATIC_LIBRARY}>:HuskarUIBasicPlugin>
 )
+target_link_libraries(mplayer PRIVATE Qt6::Core)
 target_link_libraries(mplayer PRIVATE Qt6::Core)
 
 include(GNUInstallDirs)

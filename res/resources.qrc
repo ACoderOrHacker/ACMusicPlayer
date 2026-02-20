@@ -1,5 +1,40 @@
 <RCC>
     <qresource prefix="/">
         <file>img/app.png</file>
+        <file>img/volume-up-light.png</file>
+        <file>img/volume-down-light.png</file>
+        <file>img/volume-mute-light.png</file>
+        <file>img/volume-up-dark.png</file>
+        <file>img/volume-down-dark.png</file>
+        <file>img/volume-mute-dark.png</file>
+        <file>img/album-dark.png</file>
+        <file>img/album-light.png</file>
+        <file>img/artist-dark.png</file>
+        <file>img/artist-light.png</file>
+        <file>img/fast-forward-dark.png</file>
+        <file>img/fast-forward-light.png</file>
+        <file>img/library-dark.png</file>
+        <file>img/library-light.png</file>
+        <file>img/pause-dark.png</file>
+        <file>img/pause-light.png</file>
+        <file>img/repeat-dark.png</file>
+        <file>img/repeat-light.png</file>
+        <file>img/rewind-dark.png</file>
+        <file>img/rewind-light.png</file>
+        <file>img/shuffle-dark.png</file>
+        <file>img/shuffle-light.png</file>
+        <file>img/skip-back-dark.png</file>
+        <file>img/skip-back-light.png</file>
+        <file>img/skip-forward-dark.png</file>
+        <file>img/skip-forward-light.png</file>
+        <file>img/song-dark.png</file>
+        <file>img/song-light.png</file>
+        <file>img/sequence-dark.png</file>
+        <file>img/sequence-light.png</file>
+        <file>img/play-dark.png</file>
+        <file>img/play-light.png</file>
+        <file>img/play-disabled.png</file>
+        <file>img/fast-forward-disabled.png</file>
+        <file>img/rewind-disabled.png</file>
     </qresource>
 </RCC>

@@ -6,5 +6,5 @@ import HuskarUI.Basic
 import '../Components'
 
 Content {
-
+    Playbar {}
 }

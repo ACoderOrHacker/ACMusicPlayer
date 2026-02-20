@@ -1,25 +1,21 @@
 #include "versionqml.h"
 
-MPlayerVersion::MPlayerVersion(QObject *parent)
-    : QObject{parent}
-{}
-
-QString MPlayerVersion::getMajor() const
+QString MPlayerVersion::major() const
 {
     return QString(mplayer::version::major);
 }
 
-QString MPlayerVersion::getMinor() const
+QString MPlayerVersion::minor() const
 {
     return QString(mplayer::version::minor);
 }
 
-QString MPlayerVersion::getPatch() const
+QString MPlayerVersion::patch() const
 {
     return QString(mplayer::version::patch);
 }
 
-QString MPlayerVersion::getFull() const
+QString MPlayerVersion::full() const
 {
     return QString(mplayer::version::version);
 }

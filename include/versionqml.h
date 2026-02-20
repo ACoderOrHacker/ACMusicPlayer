@@ -9,18 +9,19 @@
 class MPlayerVersion : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString major READ getMajor)
-    Q_PROPERTY(QString minor READ getMinor)
-    Q_PROPERTY(QString patch READ getPatch)
-    Q_PROPERTY(QString full  READ getFull)
+    QML_ELEMENT
+    QML_SINGLETON
 public:
-    explicit MPlayerVersion(QObject *parent = nullptr);
+    static MPlayerVersion *create(QQmlEngine *, QJSEngine *)
+    {
+        return new MPlayerVersion;
+    }
 
 public:
-    QString getMajor() const;
-    QString getMinor() const;
-    QString getPatch() const;
-    QString getFull()  const;
+    Q_INVOKABLE QString major() const;
+    Q_INVOKABLE QString minor() const;
+    Q_INVOKABLE QString patch() const;
+    Q_INVOKABLE QString full()  const;
 };
 
 #endif // VERSIONQML_H

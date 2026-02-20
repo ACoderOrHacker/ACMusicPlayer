@@ -318,11 +318,14 @@ HusWindow {
                 id: navModeSwitchBtn
                 anchors.top: parent.top
                 anchors.left: parent.left
+                anchors.margins: 10
+                anchors.leftMargin: 2
                 iconSource: mplayerMenu.compactMode === HusMenu.Mode_Relaxed ? HusIcon.MenuOutlined : HusIcon.MenuFoldOutlined
                 iconSize: mplayerMenu.defaultMenuIconSize
                 checkable: false
                 colorText: HusTheme.Primary.colorTextBase
                 type: HusButton.Type_Text
+                contentDescription: qsTr('Navigation')
                 onClicked: {
                     mplayerMenu.compactMode = mplayerMenu.compactMode === HusMenu.Mode_Relaxed ? HusMenu.Mode_Compact : HusMenu.Mode_Relaxed;
                 }
@@ -496,7 +499,6 @@ HusWindow {
                         } else {
                             mplayerRouter.urlDataMap.set(Qt.url(data.source), data);
                             mplayerRouter.push(data.source);
-                            console.debug('onClickMenu', deep, key, keyPath, JSON.stringify(data));
                         }
                     }
                 }
