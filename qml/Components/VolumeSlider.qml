@@ -2,21 +2,30 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import HuskarUI.Basic
+import ACMusicPlayer
 
 Rectangle {
     id: volumeControl
     width: 180
-    height: 38
+    height: 30
     radius: 6
     border.width: 2
     border.color: '#e8e8e8'
     color: 'transparent'
 
-    property real volume: volumeSlider.currentValue
-    property bool muted: false
+    property real log100: 4.60517018599
+
+    function logarithmicVolumeToLinearVolume(volume)
+    {
+        var v = volume / 100.0;
+        if (v > 0.99)
+            return 100;
+        else
+            return Math.round((-Math.log(1 - v) / log100) * 100);
+    }
 
     function realVolume() {
-        return muted ? 0 : volume
+        return Player.muted ? 0 : Player.audioOutput.volume
     }
 
     ThemeImageButton {
@@ -29,7 +38,7 @@ Rectangle {
         anchors.leftMargin: 8
         iconID: realVolume() === 0 ? 'volume-mute' : 'volume-up'
 
-        onClicked: { muted = !muted; }
+        onClicked: { Player.muted = !Player.muted; }
     }
 
     HusSlider {
@@ -43,12 +52,16 @@ Rectangle {
         value: 100
         snapMode: HusSlider.SnapOnRelease
 
+        onCurrentValueChanged: {
+            Player.audioOutput.volume = logarithmicVolumeToLinearVolume(currentValue);
+        }
+
         HusCopyableText {
             id: volumeText
             anchors.left: parent.right
             anchors.leftMargin: 8
             anchors.verticalCenter: parent.verticalCenter
-            text: Math.round(realVolume()) + '%'
+            text: Math.round(parent.currentValue) + '%'
             visible: width + volumeSlider.x < volumeControl.width
         }
     }

@@ -1,5 +1,9 @@
 #include "mediaplayer.h"
 
+ACMediaPlayer::ACMediaPlayer(QObject *parent)
+    : QMediaPlayer{parent}
+{}
+
 ACMediaPlayer::PlayingOption ACMediaPlayer::playingOption() const
 {
     return this->option;
@@ -16,12 +20,22 @@ bool ACMediaPlayer::hasMedia() const
     return hasVideo() || hasAudio();
 }
 
+QUrl ACMediaPlayer::coverUrl() const
+{
+    return this->coverImgUrl;
+}
+
+void ACMediaPlayer::setCoverUrl(QUrl url)
+{
+    this->coverImgUrl = url;
+}
+
 void ACMediaPlayer::onHasAudioEmitted()
 {
-    emit hasMediaChanged(hasMedia());
+    emit hasMediaChanged(hasAudio() || hasMedia());
 }
 
 void ACMediaPlayer::onHasVideoEmitted()
 {
-    emit hasMediaChanged(hasMedia());
+    emit hasMediaChanged(hasAudio() || hasMedia());
 }

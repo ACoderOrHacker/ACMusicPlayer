@@ -148,7 +148,7 @@ HusWindow {
 
                     HusCopyableText {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTr('ACMusic Player Version: ') + MPlayerVersion.full
+                        text: qsTr('ACMusic Player Version: ') + MPlayerVersion.full()
                     }
 
                     HusCopyableText {

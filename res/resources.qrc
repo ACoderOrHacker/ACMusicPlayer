@@ -36,5 +36,8 @@
         <file>img/play-disabled.png</file>
         <file>img/fast-forward-disabled.png</file>
         <file>img/rewind-disabled.png</file>
+        <file>img/song-disabled.png</file>
+        <file>img/shrink-dark.png</file>
+        <file>img/shrink-light.png</file>
     </qresource>
 </RCC>

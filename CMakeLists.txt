@@ -8,6 +8,8 @@ set(CMKAE_CXX_STANDARD 23)
 find_package(Qt6 REQUIRED COMPONENTS Multimedia)
 find_package(Qt6 REQUIRED COMPONENTS Quick)
 find_package(Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(HuskarUI REQUIRED)
 
 qt_standard_project_setup(REQUIRES 6.8)
@@ -25,6 +27,10 @@ qt_add_executable(mplayer
     res/resources.qrc
 )
 
+set_source_files_properties(qml/Components/Player/Player.qml
+    PROPERTIES QT_QML_SINGLETON_TYPE TRUE
+)
+
 qt_add_qml_module(mplayer
     URI ACMusicPlayer
     QML_FILES
@@ -32,19 +38,18 @@ qt_add_qml_module(mplayer
         qml/Home/HomePage.qml
         qml/Home/SettingsPage.qml
         qml/Home/Playing.qml
-        qml/Components/Content.qml
         qml/Home/Playlist.qml
     SOURCES include/version.h include/themeswitchitem.h include/versionqml.h include/mediaplayer.h
     RESOURCES res/resources.qrc
     SOURCES src/main.cpp src/themeswitchitem.cpp src/versionqml.cpp src/mediaplayer.cpp
     SOURCES $<$<BOOL:${WIN32}>:${WIN32_RESOURCES}>
+    QML_FILES qml/Components/Content.qml
     QML_FILES qml/Components/Playbar.qml
     QML_FILES qml/Components/VolumeSlider.qml
-    QML_FILES
     QML_FILES qml/Components/ThemeImage.qml
     QML_FILES qml/Components/ThemeImageButton.qml
     QML_FILES qml/Components/PlaybarImageButton.qml
-    QML_FILES
+    QML_FILES qml/Components/Player/Player.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -68,6 +73,8 @@ target_link_libraries(mplayer PRIVATE
     $<$<BOOL:${BUILD_HUSKARUI_STATIC_LIBRARY}>:HuskarUIImplPlugin>
     $<$<BOOL:${BUILD_HUSKARUI_STATIC_LIBRARY}>:HuskarUIBasicPlugin>
 )
+target_link_libraries(mplayer PRIVATE Qt6::Core)
+target_link_libraries(mplayer PRIVATE Qt6::Core)
 target_link_libraries(mplayer PRIVATE Qt6::Core)
 target_link_libraries(mplayer PRIVATE Qt6::Core)
 

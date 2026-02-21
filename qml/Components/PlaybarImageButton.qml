@@ -7,7 +7,7 @@ ThemeImageButton {
     property string iconIDActive: ''
     property bool hasDisabledIcon: false
     property int decreaseSize: 40
-    property int defaultIconSize: 16
+    property int defaultIconSize: 24
 
     function disabledIconID(id)
     {
